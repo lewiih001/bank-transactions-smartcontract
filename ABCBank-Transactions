@@ -1,0 +1,78 @@
+pragma solidity >=0.4.0 <0.7.0;
+contract  ABCBankTransaction {
+    address owner;
+    uint128 public txCounter = 0;
+    
+    struct BankTransaction {
+        uint128 paymentId; 
+        address clientId; 
+        address recepient;
+        uint256 amt;
+        uint256 paymentTime;
+        string note;
+        string hash; 
+    }
+
+    BankTransaction[] public transactionArr;
+     //function to add new payments
+    function addPayment(
+        address client,
+        address recepient,
+        uint128 amt,
+        string calldata note
+    ) 
+    public {
+        transactionCounter += 1;
+        uint256 paymentTime = block.timestamp;
+        string memory hash = "hash";
+
+        //push the transaction to transaction array
+        transactionArr.push(
+            BankTransaction({
+                paymentId: txCounter,
+                clientId: client,
+                amt: amt,
+                note: note,
+                recepient: recepient,
+                paymentTime: paymentTime,
+                hash: hash
+            })
+        );
+    }
+
+    //view the arrays
+    function getAllTransactions() external view returns (BankTransaction[] memory) {
+        return transactionArr;
+    }
+
+    //getting information about the payment 
+    function getTransactions(uint104 paymentId)
+        external
+        view
+        returns (BankTransaction memory)
+    {
+        BankTransaction memory returnFound;
+
+        for (uint256 index = 0; index < txArr.length; index++) {
+            if (paymentId == txArr[index].paymentId) {
+                returnFound = txArr[index];
+                break;
+            }
+        }
+        return returnFound;
+    }
+    //getting client payments
+    BankTransaction[] public paymentsArr;
+
+    function getPaymentsByAdd(address addr) external {
+        for (uint256 index = 0; index < txArr.length; index++) {
+            if (addr == txArr[index].clientId) {
+                paymentsArr.push(txArr[index]);
+            }
+        }
+    }
+
+    function getAllPayments() external view returns (BankTransaction[] memory) {
+        return paymentsArr;
+    }
+}
